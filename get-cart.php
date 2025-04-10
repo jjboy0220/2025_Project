@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 
-$conn = new mysqli("localhost", "owner01", "123456", "testdb");
+$conn = new mysqli("sql102.infinityfree.com", "if0_38646806", "Apple897897", "if0_38646806_jjboy0220");
 if ($conn->connect_error) {
     die(json_encode(["state" => false, "message" => "資料庫連接失敗"]));
 }

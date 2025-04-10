@@ -29,11 +29,10 @@ if (isset($_POST['id']) && isset($_POST['price']) && isset($_POST['stock']) &&
                 $destPath = $uploadDir . $newFileName;
                 if (move_uploaded_file($fileTmpPath, $destPath)) {
                     $image_url = $destPath;
-                    $servername = "localhost";
-                    $username = "owner01";
-                    $password = "123456";
-                    $dbname = "testdb";
-
+                    $servername = "sql102.infinityfree.com";
+                    $username = "if0_38646806";
+                    $password = "Apple897897";
+                    $dbname = "if0_38646806_jjboy0220";
                     $conn = mysqli_connect($servername, $username, $password, $dbname);
                     if (!$conn) {
                         die(json_encode(["state" => false, "message" => "連線錯誤: " . mysqli_connect_error()]));
@@ -63,10 +62,10 @@ if (isset($_POST['id']) && isset($_POST['price']) && isset($_POST['stock']) &&
         }
     }
 
-    $servername = "localhost";
-    $username = "owner01";
-    $password = "123456";
-    $dbname = "testdb";
+    $servername = "sql102.infinityfree.com";
+    $username = "if0_38646806";
+    $password = "Apple897897";
+    $dbname = "if0_38646806_jjboy0220";
 
     $conn = mysqli_connect($servername, $username, $password, $dbname);
     if (!$conn) {

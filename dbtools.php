@@ -1,6 +1,6 @@
 <?php
     function create_connection(){
-        $link = mysqli_connect("localhost", "owner01", "123456") or
+        $link = mysqli_connect("sql102.infinityfree.com", "if0_38646806", "Apple897897") or
         die("連線錯誤" . mysqli_connect_error());
 
         return $link;

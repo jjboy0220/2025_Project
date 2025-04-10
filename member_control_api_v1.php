@@ -1,8 +1,8 @@
 <?php
-const DB_SERVER   = "localhost";
-const DB_USERNAME = "owner01";
-const DB_PASSWORD = "123456";
-const DB_NAME     = "testdb";
+const DB_SERVER   = "sql102.infinityfree.com";
+const DB_USERNAME = "if0_38646806";
+const DB_PASSWORD = "Apple897897";
+const DB_NAME     = "if0_38646806_jjboy0220";
 
 //建立連線
 function create_connection()

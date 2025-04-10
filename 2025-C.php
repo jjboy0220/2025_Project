@@ -46,10 +46,10 @@ if (isset($_POST['name']) && isset($_POST['price']) && isset($_POST['stock']) &&
         }
 
         // 資料庫連線
-        $servername = "localhost";
-        $username = "owner01";
-        $password = "123456";
-        $dbname = "testdb";
+        $servername = "sql102.infinityfree.com";
+        $username = "if0_38646806";
+        $password = "Apple897897";
+        $dbname = "if0_38646806_jjboy0220";
 
         $conn = mysqli_connect($servername, $username, $password, $dbname);
         if (!$conn) {
