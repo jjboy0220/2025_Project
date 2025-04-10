@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品資料-列表</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/my.css">
+    <style>
+        .table-rwd th,
+        .table-rwd td {
+            padding: 1rem;
+            min-width: 120px;
+            vertical-align: middle;
+        }
+
+        .table-rwd img {
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        .table-rwd {
+            width: 100%;
+        }
+
+        /* 針對庫存和分類欄位加寬 */
+        .table-rwd th:nth-child(3),
+        .table-rwd td:nth-child(3) {
+            /* 庫存 */
+            min-width: 150px;
+            /* 從 120px 增加到 150px */
+        }
+
+        .table-rwd th:nth-child(4),
+        .table-rwd td:nth-child(4) {
+            /* 分類 */
+            min-width: 150px;
+            /* 從 120px 增加到 150px */
+        }
+        /* 針對功能欄位加寬 */
+        .table-rwd th:nth-child(8), .table-rwd td:nth-child(8) { /* 功能 */
+            min-width: 180px; /* 增加寬度以容納按鈕 */
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">商品資料</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="2025-C-product.html">商品上架</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="2025-R-product.html">商品列表</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <table class="table table-rwd shadow-lg">
+                    <thead>
+                        <tr>
+                            <th>品名</th>
+                            <th>價格</th>
+                            <th>庫存</th>
+                            <th>分類</th>
+                            <th>說明</th>
+                            <th>圖片</th>
+                            <th>建檔時間</th>
+                            <th>功能</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mydata"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 圖片預覽模態框 -->
+    <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg"> <!-- 使用 modal-lg 增加寬度 -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imagePreviewModalLabel">圖片預覽</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="previewImage" src="" alt="預覽圖片" style="max-width: 100%; max-height: 80vh;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 更新視窗 -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-bg-warning">
+                    <h1 class="modal-title fs-5 fw-900" id="updateModalLabel">商品更新</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="update_id">
+                    <div class="mb-3">
+                        <label for="update_name" class="form-label">商品名稱</label>
+                        <input type="text" class="form-control" id="update_name" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="update_price" class="form-label">價格</label>
+                        <input type="number" class="form-control is-valid" id="update_price">
+                        <div class="valid-feedback">符合規則</div>
+                        <div class="invalid-feedback">不符合規則</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="update_stock" class="form-label">庫存</label>
+                        <input type="number" class="form-control is-valid" id="update_stock">
+                        <div class="valid-feedback">符合規則</div>
+                        <div class="invalid-feedback">不符合規則</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="update_category" class="form-label">分類</label>
+                        <select class="form-control" id="update_category">
+                            <option value="帳篷">帳篷</option>
+                            <option value="炊具">炊具</option>
+                            <option value="露營椅">露營椅</option>
+                            <option value="照明設備">照明設備</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="update_description" class="form-label">說明</label>
+                        <textarea class="form-control is-valid" id="update_description"></textarea>
+                        <div class="valid-feedback">符合規則</div>
+                        <div class="invalid-feedback">不符合規則</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="update_image" class="form-label">商品圖片</label>
+                        <input type="file" class="form-control" id="update_image" name="update_image" accept="image/*">
+                        <img id="current_image" class="mt-2" style="max-width: 200px; max-height: 200px;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="updateModal_ok_btn">確認</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        var flag_price = true;
+        var flag_stock = true;
+        var flag_description = true;
+
+        $(function () {
+            loadProducts();
+
+            $("#mydata").on("click", ".update_btn", function () {
+                const id = $(this).data("id");
+                $("#update_id").val(id);
+                $("#update_name").val($(this).data("name"));
+                $("#update_price").val($(this).data("price"));
+                $("#update_stock").val($(this).data("stock"));
+                $("#update_category").val($(this).data("category"));
+                $("#update_description").val($(this).data("description"));
+                $("#current_image").attr("src", $(this).data("image_url"));
+            });
+
+            $("#mydata").on("click", ".delete_btn", function () {
+                const id = $(this).data("id");
+                Swal.fire({
+                    title: "確認刪除?",
+                    text: "確認刪除這筆資料",
+                    icon: "warning",
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "確認",
+                    cancelButtonText: "取消"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "2025-D.php",
+                            data: JSON.stringify({ "id": id }),
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.state) {
+                                    Swal.fire({
+                                        title: data.message,
+                                        icon: "success"
+                                    }).then(() => {
+                                        loadProducts();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: data.message,
+                                        icon: "error"
+                                    });
+                                }
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    title: "API 錯誤",
+                                    icon: "error"
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            $("#update_price").bind("input propertychange", function () {
+                if ($(this).val() > 0 && $(this).val() < 100001) {
+                    $(this).removeClass("is-invalid").addClass("is-valid");
+                    flag_price = true;
+                } else {
+                    $(this).removeClass("is-valid").addClass("is-invalid");
+                    flag_price = false;
+                }
+            });
+
+            $("#update_stock").bind("input propertychange", function () {
+                if ($(this).val() >= 0) {
+                    $(this).removeClass("is-invalid").addClass("is-valid");
+                    flag_stock = true;
+                } else {
+                    $(this).removeClass("is-valid").addClass("is-invalid");
+                    flag_stock = false;
+                }
+            });
+
+            $("#update_description").bind("input propertychange", function () {
+                if ($(this).val().length > 1 && $(this).val().length < 11) {
+                    $(this).removeClass("is-invalid").addClass("is-valid");
+                    flag_description = true;
+                } else {
+                    $(this).removeClass("is-valid").addClass("is-invalid");
+                    flag_description = false;
+                }
+            });
+
+            $("#updateModal_ok_btn").click(function () {
+                if (flag_price && flag_stock && flag_description) {
+                    const formData = new FormData();
+                    formData.append("id", $("#update_id").val());
+                    formData.append("price", $("#update_price").val());
+                    formData.append("stock", $("#update_stock").val());
+                    formData.append("category", $("#update_category").val());
+                    formData.append("description", $("#update_description").val());
+                    if ($("#update_image")[0].files[0]) {
+                        formData.append("image", $("#update_image")[0].files[0]);
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "2025-U.php",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.state) {
+                                Swal.fire({
+                                    title: data.message,
+                                    icon: "success"
+                                }).then(() => {
+                                    $("#updateModal").modal("hide");
+                                    loadProducts();
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: data.message,
+                                    icon: "error"
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                title: "API 錯誤",
+                                icon: "error"
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "欄位有錯誤!",
+                        icon: "error"
+                    });
+                }
+            });
+        });
+
+        function loadProducts() {
+            $.ajax({
+                type: "GET",
+                url: "2025-R.php",
+                dataType: "json",
+                success: function (data) {
+                    if (data.state) {
+                        $("#mydata").empty();
+                        data.data.forEach(function (item) {
+                            var strHTML = `
+                            <tr>
+                                <td data-th="品名">${item.name}</td>
+                                <td data-th="價格">${item.price}</td>
+                                <td data-th="庫存">${item.stock}</td>
+                                <td data-th="分類">${item.category}</td>
+                                <td data-th="說明">${item.description}</td>
+                                <td data-th="圖片">
+                                    <img src="${item.image_url}" alt="${item.name}"
+                                         style="max-width: 100px; max-height: 100px; cursor: pointer;"
+                                         class="preview-image" data-bs-toggle="modal" data-bs-target="#imagePreviewModal"
+                                         data-image-url="${item.image_url}">
+                                </td>
+                                <td data-th="建檔時間">${item.created_at}</td>
+                                <td data-th="功能">
+                                    <button class="btn btn-warning update_btn" data-bs-toggle="modal" data-bs-target="#updateModal"
+                                        data-id="${item.id}" data-name="${item.name}" data-price="${item.price}" data-stock="${item.stock}"
+                                        data-category="${item.category}" data-description="${item.description}" data-image_url="${item.image_url}">更新</button>
+                                    <button class="btn btn-danger delete_btn" data-id="${item.id}">刪除</button>
+                                </td>
+                            </tr>`;
+                            $("#mydata").append(strHTML);
+                        });
+
+                        // 點擊圖片觸發預覽
+                        $(".preview-image").on("click", function () {
+                            const imageUrl = $(this).data("image-url");
+                            $("#previewImage").attr("src", imageUrl);
+                        });
+                    } else {
+                        Swal.fire({
+                            title: data.message,
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        title: "API 錯誤",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

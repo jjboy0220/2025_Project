@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品資料-商品上架</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/my.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">商品資料</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="2025-C-product.html">商品上架</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="2025-R-product.html">商品列表</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row justify-content-center py-5">
+            <div class="col-md-10">
+                <div class="card shadow shadow-lg">
+                    <div class="card-body">
+                        <form id="createProductForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">商品名稱</label>
+                                <input type="text" name="name" id="name" class="form-control is-invalid">
+                                <div class="valid-feedback">符合規則</div>
+                                <div class="invalid-feedback">不符合規則</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label">價格</label>
+                                <input type="number" name="price" id="price" class="form-control is-invalid" min="0" max="100000" placeholder="1~100000元">
+                                <div class="valid-feedback">符合規則</div>
+                                <div class="invalid-feedback">不符合規則</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="stock" class="form-label">庫存</label>
+                                <input type="number" name="stock" id="stock" class="form-control is-invalid" min="0" placeholder="請輸入庫存數量">
+                                <div class="valid-feedback">符合規則</div>
+                                <div class="invalid-feedback">不符合規則</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label">分類</label>
+                                <select class="form-control" id="category" name="category">
+                                    <option value="帳篷">帳篷</option>
+                                    <option value="炊具">炊具</option>
+                                    <option value="露營椅">露營椅</option>
+                                    <option value="照明設備">照明設備</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">說明</label>
+                                <textarea name="description" id="description" class="form-control is-invalid"></textarea>
+                                <div class="valid-feedback">符合規則</div>
+                                <div class="invalid-feedback">不符合規則</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">商品圖片</label>
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                                <div id="imagePreview" class="mt-2"></div>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-secondary" onclick="location.href='2025-R-product.html'">取消</button>
+                                <button type="submit" class="btn btn-info" id="ok_btn">確認</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        var flag_name = false;
+        var flag_price = false;
+        var flag_stock = false;
+        var flag_description = false;
+
+        $(function () {
+            // 圖片預覽
+            $("#image").change(function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#imagePreview").html(`<img src="${e.target.result}" alt="圖片預覽" style="max-width: 200px; max-height: 200px;">`);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    $("#imagePreview").html("");
+                }
+            });
+
+            // 即時監聽 name
+            $("#name").bind("input propertychange", function () {
+                if ($(this).val().length > 1 && $(this).val().length < 101) {
+                    $("#name").removeClass("is-invalid").addClass("is-valid");
+                    flag_name = true;
+                } else {
+                    $("#name").removeClass("is-valid").addClass("is-invalid");
+                    flag_name = false;
+                }
+            });
+
+            // 即時監聽 price
+            $("#price").bind("input propertychange", function () {
+                if ($(this).val() > 0 && $(this).val() < 100001) {
+                    $("#price").removeClass("is-invalid").addClass("is-valid");
+                    flag_price = true;
+                } else {
+                    $("#price").removeClass("is-valid").addClass("is-invalid");
+                    flag_price = false;
+                }
+            });
+
+            // 即時監聽 stock
+            $("#stock").bind("input propertychange", function () {
+                if ($(this).val() >= 0) {
+                    $("#stock").removeClass("is-invalid").addClass("is-valid");
+                    flag_stock = true;
+                } else {
+                    $("#stock").removeClass("is-valid").addClass("is-invalid");
+                    flag_stock = false;
+                }
+            });
+
+            // 即時監聽 description
+            $("#description").bind("input propertychange", function () {
+                if ($(this).val().length > 1 && $(this).val().length < 1001) {
+                    $("#description").removeClass("is-invalid").addClass("is-valid");
+                    flag_description = true;
+                } else {
+                    $("#description").removeClass("is-valid").addClass("is-invalid");
+                    flag_description = false;
+                }
+            });
+
+            // 監聽表單提交
+            $("#createProductForm").submit(function (e) {
+                e.preventDefault();
+                if (flag_name && flag_price && flag_stock && flag_description) {
+                    const formData = new FormData();
+                    formData.append("name", $("#name").val());
+                    formData.append("price", $("#price").val());
+                    formData.append("stock", $("#stock").val());
+                    formData.append("category", $("#category").val());
+                    formData.append("description", $("#description").val());
+                    formData.append("image", $("#image")[0].files[0]);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "2025-C.php", // 修改為您的範例 API
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.state) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: data.message,
+                                    confirmButtonText: "確認",
+                                    allowOutsideClick: false
+                                }).then(() => {
+                                    location.href = "2025-R-product.html";
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: data.message
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: "error",
+                                title: "API 錯誤"
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "欄位有錯誤!"
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

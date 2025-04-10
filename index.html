@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/camping-icon" href="images/icon/camping.ico" />
+    <title>露營選物商店</title>
+    <link rel="stylesheet" href="css/my.css">
+    <link rel="stylesheet" href="css/2025_Project_style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <style>
+        .nav div.main_list ul li a {
+            color: var(--mycolor10);
+        }
+
+        .nav div.main_list ul li a:hover {
+            color: var(--mycolor23);
+        }
+
+        .category-btn.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #product-display .category-btn {
+            font-size: 2rem;
+            padding: 12px 24px;
+            width: auto;
+            font-family: "Zen Maru Gothic", serif;
+            font-weight: 700;
+        }
+
+        #product-display .category-btn:hover {
+            font-size: 2rem;
+            font-family: "Zen Maru Gothic", serif;
+            font-weight: 700;
+        }
+
+        #controlPanelDropdown,
+        #categoryDropdown {
+            display: none;
+        }
+
+        #categoryDropdown.show,
+        #controlPanelDropdown.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .dropdown-menu.show {
+            animation: slideDown 0.3s ease-in-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .dropdown-item {
+            background-color: #ffffff;
+            /* 正常背景 */
+            border: 1px solid #e0e0e0;
+            /* 邊框 */
+            border-radius: 4px;
+            margin: 5px 0;
+            padding: 8px 16px;
+            color: var(--mycolor10);
+            /* 文字色與導航一致 */
+            transition: background-color 0.2s ease, color 0.2s ease;
+            width: 100%;
+            text-align: left;
+            text-decoration: none;
+            /* 移除 <a> 的下劃線 */
+        }
+
+        .dropdown-item:hover {
+            background-color: #00E676;
+            /* 懸停背景 */
+            color: #000;
+            /* 懸停文字 */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 導覽列 :  section 01 -->
+    <section id="s01">
+        <nav class="nav">
+            <div class="container">
+                <div class="logo">
+                    <a href="#">露營選物商店</a>
+                </div>
+                <div id="mainListDiv" class="main_list">
+                    <ul class="navlinks">
+                        <li><a href="#">首頁</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="allProductsDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                商品分類
+                            </a>
+                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="allProductsDropdown"
+                                id="categoryDropdown">
+                                <li><a class="dropdown-item category-menu-btn" href="#" data-category="all">全部</a></li>
+                                <li><a class="dropdown-item category-menu-btn" href="#" data-category="帳篷">帳篷</a></li>
+                                <li><a class="dropdown-item category-menu-btn" href="#" data-category="露營椅">露營椅</a></li>
+                                <li><a class="dropdown-item category-menu-btn" href="#" data-category="炊具">炊具</a></li>
+                                <li><a class="dropdown-item category-menu-btn" href="#" data-category="照明設備">照明設備</a>
+                                </li>
+                        </li>
+                    </ul>
+                    </li>
+
+                    <li class="nav-item dropdown d-none" id="s02_dropdown_btn">
+                        <a class="nav-link dropdown-toggle" href="#" id="allProductsDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            管理者後台
+                        </a>
+                        <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="allProductsDropdown"
+                            id="controlPanelDropdown">
+                            <li><a class="dropdown-item control-menu-btn" href="2025-C-product.html"
+                                    target="_blank">商品資料</a></li>
+                            <li><a class="dropdown-item control-menu-btn" href="#">圖表資訊</a></li>
+                            <!-- <li><a class="dropdown-item" href="#"></a></li>
+                                <li><a class="dropdown-item" href="#"></a></li> -->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <button id="s01_reg_btn" style="background: none; border: none; cursor: pointer;"
+                            data-bs-toggle="modal" data-bs-target="#registerModal">
+                            <img src="images/icon/user.png" alt="user icon" width="35px" style="margin-top: 3px;">
+                        </button>
+                    </li>
+                    <li>
+                        <button id="s01_login_btn" style="background: none; border: none; cursor: pointer;"
+                            data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <img src="images/icon/login.png" alt="login icon" width="50px" style="margin-top: 3px;">
+                        </button>
+                    </li>
+                    <li><button class="d-none" id="s01_logout_btn"
+                            style="background: none; border: none; cursor: pointer;">
+                            <img src="images/icon/logout.png" alt="logout icon" width="35px" style="margin-top: 3px;">
+                        </button></li>
+                    <!-- <li>
+                            <button id="s01_shop_btn" style="background: none; border: none; cursor: pointer;">
+                                <img src="images/icon/shopping-cart.png" alt="" width="35px" style="margin-top: 3px;">
+                            </button>
+                        </li> -->
+                    </ul>
+                </div>
+                <span class="navTrigger">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </span>
+            </div>
+        </nav>
+    </section>
+
+    <!-- registerModal : 會員註冊 -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-bg-warning">
+                    <h1 class="modal-title fs-4 fw-900" id="exampleModalLabel">會員註冊</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="d-flex flex-column h-100">
+                                <div class="display-6 fw-900 my-3">會員守則</div>
+                                <p>1.誠實提供個人資訊<br>
+                                    會員在註冊時，應提供真實、準確、完整的個人資料，並保持資料的最新狀態。若有虛假資訊，可能會影響會員的權益或導致帳號被停用。</p>
+                                <p>2.遵守平台規範<br>
+                                    會員應遵守本平台的所有使用條款及規範，不得進行任何非法或不當的行為，如詐騙、濫用服務或損害他人權益等。</p>
+                                <p>3.保護帳號安全<br>
+                                    會員應妥善保管帳號密碼，不得將帳號密碼透露給他人。若發現帳號異常或疑似被盜用，應立即通知平台以便及時處理。</p>
+                                <p>4.尊重他人權利<br>
+                                    會員在使用平台服務時，應尊重其他會員的隱私與權益，不得發表侮辱、歧視、威脅或違反社會道德的言論或行為。</p>
+                                <div class="form-check form-switch mt-auto">
+                                    <input type="checkbox" class="form-check-input is-invalid" role="switch" id="chk01"
+                                        name="chk01">
+                                    <label for="chk01" class="form-check-label">不同意</label>
+                                    <div class="valid-feedback" style="color: #faf9f9;">.</div>
+                                    <div class="invalid-feedback">須同意始能註冊!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">帳號</label>
+                                <input type="text" class="form-control is-invalid" id="username_reg" name="username_reg"
+                                    placeholder="3-6字數">
+                                <div class="valid-feedback" id="regModal_username_valid_feedback">符合規則</div>
+                                <div class="invalid-feedback" id="regModal_username_invalid_feedback">不符合規則</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">密碼</label>
+                                <input type="password" class="form-control is-invalid" id="password_reg"
+                                    name="password_reg" placeholder="3-6字數">
+                                <div class="valid-feedback">符合規則</div>
+                                <div class="invalid-feedback">不符合規則</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">確認密碼</label>
+                                <input type="password" class="form-control is-invalid" id="re_password_reg"
+                                    name="re_password_reg">
+                                <div class="valid-feedback">符合規則</div>
+                                <div class="invalid-feedback">不符合規則</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Email</label>
+                                <input type="email" class="form-control is-invalid" id="email_reg" name="email_reg"
+                                    placeholder="3-10字數">
+                                <div class="valid-feedback">符合規則</div>
+                                <div class="invalid-feedback">不符合規則</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="ok_btn_reg">確認</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- loginModal : 會員登入 -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-bg-success">
+                    <h1 class="modal-title  fs-4 fw-900" id="exampleModalLabel">會員登入</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="" class="form-label">帳號</label>
+                        <input type="text" class="form-control is-invalid" id="username_login" name="username_login">
+                        <div class="invalid-feedback">請輸入帳號</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">密碼</label>
+                        <input type="password" class="form-control is-invalid" id="password_login"
+                            name="password_login">
+                        <div class="invalid-feedback">請輸入密碼</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="ok_btn_login">確認</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 關於我們 -->
+    <section class="home d-flex justify-content-center align-items-center" no-repeat center center>
+        <div class="card text-white bg-transparent border-light p-5 shadow-lg about-us-card">
+            <h2 class="card-title text-center mb-4">關於我們</h2>
+            <p class="card-text">
+                我們是一家專注於露營選物的商店，精選各式帳篷、炊具、露營椅等裝備，陪你一起探索大自然的美好。我們相信戶外活動不僅是一場旅行，更是一種生活態度。
+            </p>
+            <p class="card-text">
+                無論你是露營新手還是資深玩家，我們都致力於提供最優質的商品與服務，讓每一次的露營體驗都成為美好的回憶。
+            </p>
+        </div>
+    </section>
+
+    <!-- 商品展示區 -->
+    <section id="product-display" class="py-5" style="background-image: url(/images/BGI/BGI-01.jpg);">
+        <div class="container">
+            <h2 class="text-center mb-4" style="font-size: 3rem;">商品展示</h2>
+            <div class="mb-4 text-center">
+                <button class="btn btn-outline-primary category-btn" data-category="all">全部</button>
+                <button class="btn btn-outline-primary category-btn" data-category="帳篷">帳篷</button>
+                <button class="btn btn-outline-primary category-btn" data-category="炊具">炊具</button>
+                <button class="btn btn-outline-primary category-btn" data-category="露營椅">露營椅</button>
+                <button class="btn btn-outline-primary category-btn" data-category="照明設備">照明設備</button>
+            </div>
+            <div class="row" id="product-list">
+                <!-- 動態生成的商品卡片將插入這裡 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <img src="${item.image_url}" class="card-img-top" alt="${item.name}"
+                            style="height: 100%; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">${item.name}</h5>
+                            <p class="card-text text-danger">NT$ ${item.price}</p>
+                            <a href="product-detail.html?id=${item.id}" class="btn btn-primary">查看詳情</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jquery needed -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/counterup2@2.0.2/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script>
+        var flag_username_reg = false;
+        var flag_password_reg = false;
+        var flag_re_password_reg = false;
+        var flag_chk01_reg = false;
+        var flag_username_login = false;
+        var flag_password_login = false;
+        $(window).scroll(function () {
+            if ($(document).scrollTop() > 50) {
+                $('.nav').addClass('affix');
+                console.log("OK");
+            } else {
+                $('.nav').removeClass('affix');
+            }
+        });
+        $('.navTrigger').click(function () {
+            $(this).toggleClass('active');
+            console.log("Clicked menu");
+            $("#mainListDiv").toggleClass("show_list");
+            $("#mainListDiv").fadeIn();
+        });
+
+        // document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+        //     item.addEventListener('mouseenter', function () {
+        //         let dropdown = this.querySelector('.dropdown-menu');
+        //         dropdown.classList.add('show');
+        //     });
+
+        //     item.addEventListener('mouseleave', function () {
+        //         let dropdown = this.querySelector('.dropdown-menu');
+        //         dropdown.classList.remove('show');
+        //     });
+        // });
+
+        $(function () {
+            //wowjs
+            new WOW().init();
+
+            // 即時監聽 username_reg
+            $("#username_reg").bind("input propertychange", function () {
+                if ($(this).val().length > 2 && $(this).val().length < 8) {
+                    // 傳遞至後端API確認帳號是否可以使用
+                    //傳遞至後端API執行註冊行為
+                    //input: {"username" : "xxxxx"}
+                    var JSONdata = {};
+                    JSONdata["username"] = $("#username_reg").val();
+                    console.log(JSON.stringify(JSONdata));
+
+                    $.ajax({
+                        type: "POST",
+                        url: "member_control_api_v1.php?action=checkuni",
+                        data: JSON.stringify(JSONdata),
+                        dataType: "json",
+                        success: showdata_checkuni,
+                        error: function () {
+                            Swal.fire({
+                                title: "API介接錯誤",
+                                text: "member_control_api_v1.php?action=checkuni",
+                                icon: error
+                            });
+                        }
+                    });
+                } else {
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    $("#regModal_username_invalid_feedback").text("不符合規則");
+                    flag_username_reg = false;
+                }
+            });
+
+            // 確認uid01是否存在
+            if (getCookie("Uid01")) {
+                // 將uid01傳遞至後端API執行驗證
+                // input {"uid01" : "7e650982"}
+                var JSONdata = {};
+                JSONdata["uid01"] = getCookie("Uid01");
+                console.log(JSON.stringify(JSONdata));
+
+                $.ajax({
+                    type: "POST",
+                    url: "member_control_api_v1.php?action=checkuid",
+                    data: JSON.stringify(JSONdata),
+                    dataType: "json",
+                    success: showdata_checkuid,
+                    error: function () {
+                        Swal.fire({
+                            title: "API介接錯誤?",
+                            text: "member_control_api_v1.php?action=checkuid",
+                            icon: "error"
+                        });
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "請先登入會員!",
+                    icon: "info",
+                    allowOutsideClick: false,
+                });
+            }
+
+            // 即時監聽 password_reg
+            $("#password_reg").bind("input propertychange", function () {
+                $("#re_password_reg").removeClass("is-valid");
+                $("#re_password_reg").addClass("is-invalid");
+                flag_re_password_reg = false;
+
+                if ($(this).val().length > 2 && $(this).val().length < 8) {
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_password_reg = true;
+                } else {
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_password_reg = false;
+                }
+            });
+
+            // 即時監聽 re_password_reg
+            $("#re_password_reg").bind("input propertychange", function () {
+                if (flag_password_reg && $(this).val() === $("#password_reg").val()) {
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_re_password_reg = true;
+                } else {
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_re_password_reg = false;
+                }
+            });
+
+            // 即時監聽 email_reg
+            $("#email_reg").bind("input propertychange", function () {
+                if ($(this).val().length > 2 && $(this).val().length < 11) {
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_email_reg = true;
+                } else {
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_email_reg = false;
+                }
+            });
+
+            // 即時監聽 chk01
+            $("#chk01").change(function () {
+                console.log($(this).is(':checked'));
+                if ($(this).is(':checked')) {
+                    $(this).next().text("同意");
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_chk01_reg = true;
+                } else {
+                    $(this).next().text("不同意");
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_chk01_reg = false;
+                }
+            });
+
+            // 即時監聽 username_login
+            $("#username_login").bind("input propertychange", function () {
+                if ($(this).val().length > 0) {
+                    $(this).removeClass("is-invalid");
+                    flag_username_login = true;
+                } else {
+                    $(this).addClass("is-invalid");
+                    flag_username_login = false;
+                }
+            });
+
+            // 即時監聽 password_login
+            $("#password_login").bind("input propertychange", function () {
+                if ($(this).val().length > 0) {
+                    $(this).removeClass("is-invalid");
+                    flag_password_login = true;
+                } else {
+                    $(this).addClass("is-invalid");
+                    flag_password_login = false;
+                }
+            });
+
+            // ok_btn_reg 按鈕監聽
+            $("#ok_btn_reg").click(function () {
+                if (flag_username_reg && flag_password_reg && flag_re_password_reg && flag_email_reg && flag_chk01_reg) {
+                    //傳遞至後端API執行註冊行為
+                    //input: {"username" : "owner04", "password" : "123456", "email" : "owner01@test.com"}
+                    var JSONdata = {};
+                    JSONdata["username"] = $("#username_reg").val();
+                    JSONdata["password"] = $("#password_reg").val();
+                    JSONdata["email"] = $("#email_reg").val();
+                    console.log(JSON.stringify(JSONdata));
+
+                    $.ajax({
+                        type: "POST",
+                        url: "member_control_api_v1.php?action=register",
+                        data: JSON.stringify(JSONdata),
+                        dataType: "json",
+                        success: showdata_reg,
+                        error: function () {
+                            Swal.fire({
+                                title: "API介接錯誤?",
+                                text: "member_control_api_v1.php?action=register",
+                                icon: "error"
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "欄位有錯誤, 請修正?",
+                        icon: "warning",
+                        showCancelButton: false,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "確認"
+                    }).then((result) => {
+                        // if (result.isConfirmed) {
+                        //     Swal.fire({
+                        //         title: "Deleted!",
+                        //         text: "Your file has been deleted.",
+                        //         icon: "success"
+                        //     });
+                        // }
+                    });
+                }
+            });
+
+            // ok_btn_login 按鈕監聽
+            $("#ok_btn_login").click(function () {
+                if (flag_username_login && flag_password_login) {
+                    // 傳遞至後端API執行登入行為
+                    // input:{"username" : "owner08", "password" : "123456"}
+                    var JSONdata = {};
+                    JSONdata["username"] = $("#username_login").val();
+                    JSONdata["password"] = $("#password_login").val();
+                    console.log(JSON.stringify(JSONdata));
+                    $.ajax({
+                        type: "POST",
+                        url: "member_control_api_v1.php?action=login",
+                        data: JSON.stringify(JSONdata),
+                        dataType: "json",
+                        success: showdata_login,
+                        error: function () {
+                            Swal.fire({
+                                title: "API介接錯誤?",
+                                text: "member_control_api_v1.php?action=login",
+                                icon: "error"
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "輸入錯誤!",
+                        text: "請輸入帳號和密碼!",
+                        icon: "error"
+                    });
+                }
+            });
+
+            // s01_logout_btn 按鈕監聽
+            $("#s01_logout_btn").click(function () {
+                setCookie("Uid01", "", 7);
+                $("#controlPanelDropdown").css("display", "none"); // 登出時隱藏選單
+                $("#categoryDropdown").css("display", "none"); // 登出時隱藏選單
+                location.href = "index.html";
+            });
+        });
+
+        $(function () {
+
+            if (getCookie("Uid01")) {
+                $.ajax({
+                    type: "GET",
+                    url: "cart_api.php?action=get_cart&uid=" + getCookie("Uid01"),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.state && data.data.items.length > 0) {
+                            Swal.fire({
+                                title: "歡迎回來！您的購物車有 " + data.data.items.length + " 件商品",
+                                icon: "info"
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        function showdata_reg(data) {
+            console.log(data);
+            if (data.state) {
+                Swal.fire({
+                    title: data.message,
+                    icon: "success"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.href = "index.html";
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: data.message,
+                    icon: "error"
+                });
+            }
+        }
+
+        function showdata_login(data) {
+            console.log(data);
+            if (data.state) {
+                Swal.fire({
+                    title: data.message,
+                    icon: "success"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // loginModal 消失
+                        $("#loginModal").modal("hide");
+
+                        // 隱藏註冊與登入按鈕
+                        $("#s01_reg_btn").addClass("d-none");
+                        $("#s01_login_btn").addClass("d-none");
+
+                        // 顯示登出按鈕
+                        $("#s01_logout_btn").removeClass("d-none");
+
+                        // 顯示後台按鈕
+                        $("#s02_dropdown_btn").removeClass("d-none");
+
+                        // uid驗證碼寫入cookie
+                        setCookie("Uid01", data.data.Uid01, 7);
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: data.message,
+                    icon: "error"
+                });
+            }
+        }
+
+        function showdata_checkuid(data) {
+            console.log(data);
+            if (data.state) {
+                // 隱藏註冊與登入按鈕
+                $("#s01_reg_btn").addClass("d-none");
+                $("#s01_login_btn").addClass("d-none");
+
+                // 顯示登出按鈕
+                $("#s01_logout_btn").removeClass("d-none");
+
+                // 顯示後台按鈕
+                $("#s02_dropdown_btn").removeClass("d-none");
+            }
+        }
+
+        function showdata_checkuni(data) {
+            console.log(data);
+            if (data.state) {
+                // 帳號不存在可以使用
+                $("#username_reg").removeClass("is-invalid");
+                $("#username_reg").addClass("is-valid");
+                $("#regModal_username_valid_feedback").text(data.message);
+                flag_username_reg = true;
+            } else {
+                // 帳號存在不可以使用
+                $("#username_reg").removeClass("is-valid");
+                $("#username_reg").addClass("is-invalid");
+                $("#regModal_username_invalid_feedback").text(data.message);
+                flag_username_reg = false;
+            }
+        }
+
+        // from w3s
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    </script>
+    <script>
+        $(function () {
+            let allProducts = []; // 儲存所有商品資料
+
+            // 加載商品資料
+            loadProducts();
+
+            function loadProducts() {
+                $.ajax({
+                    type: "GET",
+                    url: "2025-R.php",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.state) {
+                            allProducts = data.data; // 儲存所有商品
+                            renderProducts(allProducts); // 渲染商品
+                        } else {
+                            Swal.fire({
+                                title: data.message,
+                                icon: "error"
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "API 錯誤",
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+
+            function renderProducts(products) {
+                $("#product-list").empty(); // 清空現有內容
+                products.forEach(function (item) {
+                    var cardHTML = `
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <img src="${item.image_url}" class="card-img-top" alt="${item.name}" style="height: 100%; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-size: 1.7rem">${item.name}</h5>
+                                    <p class="card-text text-danger" style="font-size: 1.5rem">NT$ ${item.price}</p>
+                                    <a href="product-detail.html?id=${item.id}" class="btn btn-primary">查看詳情</a>
+                                </div>
+                            </div>
+                        </div>`;
+                    $("#product-list").append(cardHTML);
+                });
+            }
+
+            // 分類篩選按鈕點擊事件
+            $(".category-btn").click(function () {
+                const category = $(this).data("category");
+                let filteredProducts = [];
+
+                if (category === "all") {
+                    filteredProducts = allProducts;
+                } else {
+                    filteredProducts = allProducts.filter(item => item.category === category);
+                }
+
+                renderProducts(filteredProducts);
+            });
+
+            // 下拉選單按鈕點擊事件
+            $(".category-menu-btn").click(function (e) {
+                e.preventDefault(); // 阻止 <a> 的預設跳轉
+                const category = $(this).data("category");
+                const targetBtn = $(`.category-btn[data-category="${category}"]`);
+                if (targetBtn.length) {
+                    targetBtn.trigger("click");
+                }
+                $('html, body').animate({ scrollTop: $("#product-display").offset().top - 50 }, 800);
+                $(this).closest('.dropdown-menu').removeClass('show');
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

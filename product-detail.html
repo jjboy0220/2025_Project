@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品詳情</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        /* 全局樣式 */
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* 商品詳情卡片 */
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .product-image {
+            transition: transform 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05);
+        }
+
+        /* 按鈕樣式 */
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 數量輸入框 */
+        .form-group label {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            max-width: 100px;
+        }
+
+        /* 購物車側邊欄 */
+        .offcanvas {
+            background: linear-gradient(135deg, #ffffff, #f1f3f5);
+            transition: transform 0.3s ease;
+        }
+
+        .offcanvas.show {
+            transform: translateX(0);
+        }
+
+        .cart-item {
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .cart-item p {
+            margin: 0;
+            color: #555;
+        }
+
+        .offcanvas-header {
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .offcanvas-title {
+            color: #007bff;
+            font-weight: 700;
+        }
+
+        /* 總金額 */
+        #cart-total p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container py-5">
+        <div class="row" v-if="product">
+            <div class="col-md-6">
+                <img :src="product.image_url" class="img-fluid product-image" alt="商品圖片">
+            </div>
+            <div class="col-md-6">
+                <div class="product-card">
+                    <h2>{{ product.name }}</h2>
+                    <p class="text-danger">NT$ {{ product.price }}</p>
+                    <p>{{ product.description }}</p>
+                    <p>庫存: {{ product.stock }}</p>
+                    <div class="form-group">
+                        <label for="quantity">數量:</label>
+                        <input type="number" v-model.number="quantity" class="form-control" min="1">
+                    </div>
+                    <button @click="addToCart" class="btn btn-primary mt-2">加入購物車</button>
+                </div>
+            </div>
+        </div>
+        <div v-else>
+            <p class="text-center text-muted">載入中...</p>
+        </div>
+
+        <div class="offcanvas offcanvas-end" :class="{ 'show': isCartOpen }" tabindex="-1">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title">購物車</h5>
+                <button type="button" class="btn-close" @click="isCartOpen = false"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div v-for="item in cartItems" :key="item.product_id" class="cart-item">
+                    <p>{{ item.name }} x {{ item.quantity }}</p>
+                    <p>NT$ {{ item.price * item.quantity }}</p>
+                </div>
+                <div id="cart-total" class="mt-3">
+                    <p>總金額: NT$ {{ totalAmount }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const { createApp, ref, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                const product = ref(null);
+                const quantity = ref(1);
+                const cartItems = ref([]);
+                const totalAmount = ref(0);
+                const isCartOpen = ref(false);
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const productId = urlParams.get('id');
+
+                const getCookie = (name) => {
+                    let value = "; " + document.cookie;
+                    let parts = value.split("; " + name + "=");
+                    if (parts.length === 2) return parts.pop().split(";").shift();
+                    return "";
+                };
+
+                const loadProduct = async () => {
+                    try {
+                        const response = await axios.get("R.php");
+                        if (response.data.state) {
+                            const foundProduct = response.data.data.find(item => item.id == productId);
+                            if (foundProduct) {
+                                product.value = foundProduct;
+                            } else {
+                                Swal.fire({ title: "商品不存在", icon: "error" });
+                            }
+                        } else {
+                            Swal.fire({ title: response.data.message, icon: "error" });
+                        }
+                    } catch (error) {
+                        Swal.fire({ title: "API 錯誤", icon: "error" });
+                    }
+                };
+
+                const addToCart = async () => {
+                    const uid = getCookie("Uid01");
+                    if (!uid) {
+                        Swal.fire({ title: "請先登入會員!", icon: "info" });
+                        return;
+                    }
+
+                    try {
+                        const response = await axios.post(
+                            "cart_api.php?action=add_to_cart",
+                            { uid, product_id: productId, quantity: quantity.value },
+                            { headers: { "Content-Type": "application/json" } }
+                        );
+                        if (response.data.state) {
+                            Swal.fire({ title: "已加入購物車", icon: "success" });
+                            await updateCartSidebar(uid);
+                            isCartOpen.value = true;
+                        } else {
+                            Swal.fire({ title: response.data.message, icon: "error" });
+                        }
+                    } catch (error) {
+                        Swal.fire({ title: "API 錯誤", icon: "error" });
+                    }
+                };
+
+                const updateCartSidebar = async (uid) => {
+                    try {
+                        const response = await axios.get(`cart_api.php?action=get_cart&uid=${uid}`);
+                        if (response.data.state) {
+                            cartItems.value = response.data.data.items;
+                            totalAmount.value = response.data.data.total_amount;
+                        }
+                    } catch (error) {
+                        Swal.fire({ title: "無法獲取購物車信息", icon: "error" });
+                    }
+                };
+
+                onMounted(() => {
+                    loadProduct();
+                });
+
+                return {
+                    product,
+                    quantity,
+                    cartItems,
+                    totalAmount,
+                    isCartOpen,
+                    addToCart
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

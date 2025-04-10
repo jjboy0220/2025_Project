@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車 - 露營選物商店</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/my.css">
+    <style>
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+        }
+        .nav-link {
+            color: #555 !important;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover {
+            color: #e63946 !important;
+        }
+        .dropdown-menu {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .dropdown-item {
+            color: #555;
+            padding: 8px 20px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .dropdown-item:hover {
+            background-color: #e63946;
+            color: #fff;
+        }
+        .cart-container {
+            padding: 60px 0;
+            background-color: #f5f5f5;
+            min-height: calc(100vh - 80px);
+        }
+        .cart-table {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .cart-table th, .cart-table td {
+            padding: 15px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .cart-table th {
+            background-color: #e63946;
+            color: #fff;
+            font-weight: 600;
+        }
+        .cart-table img {
+            max-width: 80px;
+            border-radius: 8px;
+        }
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-top: 20px;
+            text-align: right;
+        }
+        .checkout-btn {
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 12px 40px;
+            background-color: #e63946;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .checkout-btn:hover {
+            background-color: #d00000;
+            transform: translateY(-2px);
+        }
+        @media (max-width: 768px) {
+            .cart-table th, .cart-table td {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+            .cart-table img {
+                max-width: 60px;
+            }
+            .cart-total {
+                font-size: 1.2rem;
+            }
+            .checkout-btn {
+                font-size: 1.1rem;
+                padding: 10px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 標題欄 -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">露營選物商店</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="allProductsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            商品分類
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="allProductsDropdown" id="categoryDropdown">
+                            <li><a class="dropdown-item" href="#" data-category="all">全部</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="帳篷">帳篷</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="露營椅">露營椅</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="炊具">炊具</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="照明設備">照明設備</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link cart-icon" @click="viewCart">🛒</span>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-primary mx-2 d-none" id="s01_reg_btn" data-bs-toggle="modal" data-bs-target="#regModal">註冊</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary mx-2 d-none" id="s01_login_btn" data-bs-toggle="modal" data-bs-target="#loginModal">登入</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-danger mx-2 d-none" id="s01_logout_btn" @click="logout">登出</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 購物車內容 -->
+    <div class="container cart-container" id="cartApp">
+        <h2 class="mb-4">我的購物車</h2>
+        <table class="table cart-table">
+            <thead>
+                <tr>
+                    <th>商品圖片</th>
+                    <th>商品名稱</th>
+                    <th>單價</th>
+                    <th>數量</th>
+                    <th>小計</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in cartItems" :key="item.product_id">
+                    <td><img :src="item.image_url" alt="商品圖片"></td>
+                    <td>{{ item.name }}</td>
+                    <td>NT$ {{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>NT$ {{ item.price * item.quantity }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="cart-total">
+            總金額: NT$ {{ totalAmount }}
+        </div>
+        <div class="text-right mt-3">
+            <button class="btn checkout-btn" @click="checkout">結帳</button>
+        </div>
+    </div>
+
+    <!-- 引入依賴 -->
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const { createApp, ref, onMounted, computed } = Vue;
+
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1, c.length);
+                }
+                if (c.indexOf(nameEQ) == 0) {
+                    return c.substring(nameEQ.length, c.length);
+                }
+            }
+            return null;
+        }
+
+        createApp({
+            setup() {
+                const cartItems = ref([]);
+                const isLoggedIn = ref(false);
+
+                const checkLoginStatus = () => {
+                    const uid = getCookie("Uid01");
+                    if (uid) {
+                        isLoggedIn.value = true;
+                        $("#s01_reg_btn").addClass("d-none");
+                        $("#s01_login_btn").addClass("d-none");
+                        $("#s01_logout_btn").removeClass("d-none");
+                    } else {
+                        isLoggedIn.value = false;
+                        $("#s01_reg_btn").removeClass("d-none");
+                        $("#s01_login_btn").removeClass("d-none");
+                        $("#s01_logout_btn").addClass("d-none");
+                        window.location.href = "index.html"; // 未登入跳轉首頁
+                    }
+                };
+
+                const totalAmount = computed(() => {
+                    return cartItems.value.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                });
+
+                onMounted(() => {
+                    checkLoginStatus();
+                    const userId = getCookie("Uid01");
+                    $.ajax({
+                        type: "GET",
+                        url: "get-cart.php",
+                        data: { user_id: userId },
+                        dataType: "json",
+                        success: (response) => {
+                            if (response.state) {
+                                cartItems.value = response.data;
+                            } else {
+                                Swal.fire({
+                                    title: response.message,
+                                    icon: "error"
+                                });
+                            }
+                        },
+                        error: () => {
+                            Swal.fire({
+                                title: "無法載入購物車",
+                                icon: "error"
+                            });
+                        }
+                    });
+                });
+
+                const viewCart = () => {
+                    window.location.href = "cart.html";
+                };
+
+                const logout = () => {
+                    setCookie("Uid01", "", -1);
+                    checkLoginStatus();
+                    Swal.fire({
+                        title: "已登出",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = "index.html";
+                    });
+                };
+
+                const checkout = () => {
+                    Swal.fire({
+                        title: "結帳功能",
+                        text: "此功能尚未實作，請聯繫開發者。",
+                        icon: "info"
+                    });
+                    // 未來可實現結帳邏輯
+                };
+
+                return {
+                    cartItems,
+                    isLoggedIn,
+                    totalAmount,
+                    viewCart,
+                    logout,
+                    checkout
+                };
+            }
+        }).mount('#cartApp');
+    </script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+/* 柔軟可愛，帶點優雅的 Zen Maru Gothic 字體 */
+/* 使用GOOGLE FONST字體:漢字篇 */
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Charmonman:wght@400;700&family=Codystar:wght@300;400&family=Honk&family=Lugrasimo&family=Meddon&family=Rubik+Gemstones&family=Zen+Maru+Gothic:wght@400;900&display=swap');
+/* font-family: "Zen Maru Gothic", serif; */
+
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+/* font-family: "DotGothic16", sans-serif; */
+
+@import url('https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Meddon&display=swap');
+/* font-family: "Charmonman", cursive; */
+
+@import url('https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Lugrasimo&family=Meddon&family=Zen+Maru+Gothic&display=swap');
+/* font-family: "Lugrasimo", cursive; */
+
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Charmonman:wght@400;700&family=Codystar:wght@300;400&family=Honk&family=Lugrasimo&family=Meddon&family=Rubik+Gemstones&family=Zen+Maru+Gothic&display=swap');
+/* font-family: "Rubik Gemstones", system-ui; */
+
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Charmonman:wght@400;700&family=Codystar:wght@300;400&family=Honk&family=Lugrasimo&family=Meddon&family=Rubik+Gemstones&family=Yusei+Magic&family=Zen+Maru+Gothic:wght@400;900&display=swap');
+/* font-family: "Yusei Magic", sans-serif; */
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
+
+
+/* 背景圖 */
+.bg-cover{
+    background-position: center 30%;
+    background-size:cover;
+    }
+
+/* 背景色 */
+.bg-001{
+    /* background-color: var(--mycolor01); */
+    color: var(--mycolor23);
+}
+.bg-002{
+    background-color: var(--mycolor02);
+}
+.bg-003{
+    background-color: var(--mycolor03);
+}
+.bg-004{
+    background-color: var(--mycolor04);
+}
+.bg-005{
+    background-color: var(--mycolor05);
+}
+.bg-006{
+    background-color: var(--mycolor06);
+}
+.bg-007{
+    background-color: var(--mycolor07);
+}
+
+/* 文字顏色 */
+.text-001{
+    color: var(--mycolor02);
+}
+.text-002{
+    color: var(--mycolor03);
+}
+.text-003{
+    color: var(--mycolor04);
+}
+.text-004{
+    color: var(--mycolor05);
+}
+.text-005{
+    color: var(--mycolor06);
+}
+.text-006{
+    color: var(--mycolor07);
+}
+.text-007{
+    color: var(--mycolor08);
+}
+.text-008{
+    color: var(--mycolor09);
+}
+.text-009{
+    color: var(--mycolor10);
+}
+.text-010{
+    color: var(--mycolor23);
+}
+
+/* rwd
+1.table.table-rwd
+2.<td data-th="xx">
+3.<span class="table-th">xx</span> */
+@media screen and (max-width: 768px) {
+    /* body{
+        /* background-color: var(--mycolor01); 
+        background-image: linear-gradient(90deg, rgba(223, 176, 176, 0.1), rgba(6, 158, 151, 0.8));
+    } */
+    .table-rwd thead{
+        display: none;
+    }
+    .table-rwd tbody tr{
+        display: block;
+        border: 5px solid var(--mycolor23);
+        margin-top: 15px;
+    }
+    .table-rwd tbody tr td{
+        display: block;
+        overflow: hidden;
+    }
+    .table-rwd tbody tr td::before{
+        content: attr(data-th) " : ";
+        color: var(--mycolor40);
+        font-size: 20px;
+        font-weight: 900;
+        display: block;
+        float: left;
+        width: 30%;
+        text-align: right;
+        padding-right: 15px;
+    }
+    .table-rwd tbody tr td span.table-th{
+        display: block;
+        float: left;   
+        width: 70%; 
+    }
+}
+
+:root{
+    /* 簡約美（Simplistic Beauty） */
+    --mycolor01:#E8ECEB;
+    --mycolor02:#E09E50;
+    --mycolor03:#8CBD89;
+    --mycolor04:#2D3E4E;
+    /* 寧靜天空（Serene Skies） */
+    --mycolor05:#FBE0C3;
+    --mycolor06:#FFBB98;
+    --mycolor07:#7D8E95;
+    --mycolor08:#344648;
+    /* 海洋配色（Ocean Impact) */
+    --mycolor09:#F9F7F0;
+    --mycolor10:#18B7BE;
+    --mycolor11:#178CA4;
+    --mycolor12:#072A40;
+    /* 柔和風格（Muted Style） */
+    --mycolor13:#F7F1F0;
+    --mycolor14:#C3A6A0;
+    --mycolor15:#A15C38;
+    --mycolor16:#262220;
+    /* 旅行色調（Travel Tones） */
+    --mycolor17:#CCD9E2;
+    --mycolor18:#285185;
+    --mycolor19:#D67940;
+    --mycolor20:#6F4849;
+    /* 雙魚座配色 */
+    --mycolor21:#598F88;
+    --mycolor22:#AAE0BE;
+    --mycolor23:#FE5853;
+    --mycolor24:#F9BCAE;
+    /* 西部風格(Western Wear) */
+    --mycolor25:#D5D2C1;
+    --mycolor26:#BD8E62;
+    --mycolor27:#A46843;
+    --mycolor28:#370D00;
+    /* 頹廢塗鴉(Grunge Graffiti) */
+    --mycolor29:#BDBDBF;
+    --mycolor30:#5580A0;
+    --mycolor31:#CC8A4D;
+    --mycolor32:#32435F;
+    /* 多角萬花筒(Angular Kaleidoscope) */
+    --mycolor33:#E4DACE;
+    --mycolor34:#E5BB4B;
+    --mycolor35:#498EAF;
+    --mycolor36:#631F16;
+    /* 柔和水彩 (Soft Watercolors) */
+    --mycolor37:#E5EDF8;
+    --mycolor38:#E29E93;
+    --mycolor39:#EDBC7A;
+    --mycolor40:#0384BD;
+    /* 復古木板 */
+    --mycolor41:#EBEBE3;
+    --mycolor42:#C7D6DB;
+    --mycolor43:#C6D2BE;
+    --mycolor44:#83B1C9;
+
+
+    --textcolor01:var(--mycolor40);
+    --textcolor02:var(--mycolor27);
+    --textcolor03:var(--mycolor04);
+    --textcolor04:var(--mycolor10);
+    --textcolor05:var(--mycolor18);
+    --textcolor06:var(--mycolor23);
+    --textcolor07:var(--mycolor03);
+    --textcolor08:var(--mycolor08);
+    --textcolor09:var(--mycolor15);
+    --textcolor10:var(--mycolor34);
+}
+
+
+
+
+/* 文字粗體 */
+.fw-100{
+    font-weight:100;
+}
+.fw-200{
+    font-weight:200;
+}.fw-300{
+    font-weight:300;
+}.fw-400{
+    font-weight:400;
+}.fw-500{
+    font-weight:500;
+}.fw-600{
+    font-weight:600;
+}.fw-700{
+    font-weight:700;
+}.fw-800{
+    font-weight:800;
+}.fw-900{
+    font-weight:900;
+}
+ 
+/* 左側滑入 roller-l:卷軸顯示更多 */
+/* 外層: .myroller-l 內層: roller-l */
+.myroller-l{
+    /* 設置相對定位，方便內部的絕對定位元素參考 */
+    position: relative;
+    /* overflow: hidden隱藏超出容器邊界的內容 */
+    overflow: hidden;
+}
+.myroller-l .roller-l{
+    /* 設置絕對定位 */
+    position:absolute;
+    z-index: 2;
+    /* 設置 .roller , 寬度填滿.myroller容器 */
+    width: 100%;
+    /* 設置 .roller , 高度填滿.myroller容器 */
+    height: 100%;
+    /* 背景設置為垂直方向的線性漸層 */
+    background-image: linear-gradient(180deg, rgba(13, 49, 148, 0.2), rgba(18, 85, 148, 0.3),rgba(102, 17, 158, 0.5));
+     /* 將覆蓋層放置在容器的垂直正中 */
+    top: 0;
+     /* 初始狀態將.roller 放置於.myroller容器的左側（看不見的位置） */
+    left: -100%;
+    /* 設置彈性盒子布局 */
+    display: flex;
+    /* 將內部內容水平置中 */
+    justify-content: center;
+    /* 將內部內容垂直置中 */
+    align-items: center;
+}
+.myroller-l:hover .roller-l
+{
+    /* 滑鼠懸停時，將.roller從左側滑入到.myroller容器內，完全覆蓋內容 */
+    left: 0;
+    /* 添加過渡效果，讓.roller的位置變化在 1 秒內平滑完成 */
+    transition:left 1s;
+}
+
+/* 上方滑入 roller-t:卷軸顯示更多 */
+/* 外層: .myroller-t 內層: roller-t */
+.myroller-t{
+    /* 設置相對定位，方便內部的絕對定位元素參考 */
+    position: relative;
+    /* overflow: hidden隱藏超出容器邊界的內容 */
+    overflow: hidden;
+}
+.myroller-t .roller-t{
+    /* 設置絕對定位 */
+    position:absolute;
+    z-index: 2;
+    /* 設置 .roller , 寬度填滿.myroller容器 */
+    width: 100%;
+    /* 設置 .roller , 高度填滿.myroller容器 */
+    height: 100%;
+    /* 背景設置為垂直方向的線性漸層 */
+    background-image: linear-gradient(180deg, rgba(13, 49, 148, 0.2), rgba(18, 85, 148, 0.3),rgba(102, 17, 158, 0.5));
+     /* 將覆蓋層放置在容器的垂直正中 */
+    top: 0;
+     /* 初始狀態將.roller 放置於.myroller容器的左側（看不見的位置） */
+    top: -100%;
+    /* 設置彈性盒子布局 */
+    display: flex;
+    /* 將內部內容水平置中 */
+    justify-content: center;
+    /* 將內部內容垂直置中 */
+    align-items: center;
+}
+.myroller-t:hover .roller-t
+{
+    /* 滑鼠懸停時，將.roller從左側滑入到.myroller容器內，完全覆蓋內容 */
+    top: 0;
+    /* 添加過渡效果，讓.roller的位置變化在 1 秒內平滑完成 */
+    transition:top 1s;
+}
+
+/* 右側滑入 roller-r:卷軸顯示更多 */
+/* 外層: .myroller-r 內層: roller-r */
+.myroller-r{
+    /* 設置相對定位，方便內部的絕對定位元素參考 */
+    position: relative;
+    /* overflow: hidden隱藏超出容器邊界的內容 */
+    overflow: hidden;
+}
+.myroller-r .roller-r{
+    position:absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(180deg, rgba(13, 49, 148, 0.2), rgba(18, 85, 148, 0.3),rgba(102, 17, 158, 0.5));
+    top: 0;
+    right: -100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.myroller-r:hover .roller-r
+{
+    right: 0;
+    transition:right 1s;
+}
+
+/* 下方滑入 roller-b:卷軸顯示更多 */
+/* 外層: .myroller-b 內層: roller-b */
+.myroller-b{
+    position: relative;
+    overflow: hidden;
+}
+.myroller-b .roller-b{
+    position:absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(180deg, rgba(13, 49, 148, 0.2), rgba(18, 85, 148, 0.3),rgba(102, 17, 158, 0.5));
+    bottom: 0;
+    bottom: -100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.myroller-b:hover .roller-b
+{
+    bottom: 0;
+    transition:bottom 1s;
+}
+
+
+/* sweetalert2 */
+/* <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> */
+/* Swal.fire({
+    title: "Do you want to save the changes?",
+    showDenyButton: true,
+    showCancelButton: true,
+    confirmButtonText: "Save",
+    denyButtonText: `Don't save`
+  }).then((result) => {
+
+    /* Read more about isConfirmed, isDenied below */
+
+    /* if (result.isConfirmed) {
+      Swal.fire("Saved!", "", "success");
+    } else if (result.isDenied) {
+      Swal.fire("Changes are not saved", "", "info");
+    }
+  });  */
+
+  /* #allowOutsideClick */
+
+
+  /* // from w3s
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        } */
