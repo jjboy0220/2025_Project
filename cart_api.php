@@ -25,7 +25,7 @@ switch ($action) {
 
         // 檢查商品是否存在並有足夠庫存
         $sql = "SELECT name, price, stock FROM products WHERE id = $product_id";
-        $result = execute_sql($link, "testdb", $sql);
+        $result = execute_sql($link, "if0_38646806_jjboy0220", $sql);
         if (!$result || mysqli_num_rows($result) === 0) {
             echo json_encode(["state" => false, "message" => "商品不存在"]);
             mysqli_close($link);
@@ -41,7 +41,7 @@ switch ($action) {
 
         // 檢查購物車中是否已有該商品
         $sql = "SELECT id, quantity FROM cart WHERE user_uid = '$uid' AND product_id = $product_id";
-        $result = execute_sql($link, "testdb", $sql);
+        $result = execute_sql($link, "if0_38646806_jjboy0220", $sql);
 
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
@@ -51,7 +51,7 @@ switch ($action) {
             $sql = "INSERT INTO cart (user_uid, product_id, quantity) VALUES ('$uid', $product_id, $quantity)";
         }
 
-        $result = execute_sql($link, "testdb", $sql);
+        $result = execute_sql($link, "if0_38646806_jjboy0220", $sql);
         if ($result) {
             echo json_encode(["state" => true, "message" => "成功加入購物車"]);
         } else {
@@ -71,7 +71,7 @@ switch ($action) {
                 FROM cart c 
                 JOIN products p ON c.product_id = p.id 
                 WHERE c.user_uid = '$uid'";
-        $result = execute_sql($link, "testdb", $sql);
+        $result = execute_sql($link, "if0_38646806_jjboy0220", $sql);
 
         $items = [];
         $total_amount = 0;

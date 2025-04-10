@@ -8,7 +8,7 @@ $link = create_connection();
 
 // 獲取所有商品資料
 $sql = "SELECT id, name, description, price, stock, image_url FROM products";
-$result = execute_sql($link, "testdb", $sql);
+$result = execute_sql($link, "if0_38646806_jjboy0220", $sql);
 
 $products = [];
 while ($row = mysqli_fetch_assoc($result)) {
