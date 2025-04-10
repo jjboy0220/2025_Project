@@ -1,7 +1,7 @@
 <?php
 require_once "dbtools.php";
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=UTF-8'); // 明確指定 UTF-8
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -10,6 +10,8 @@ $action = $_GET['action'] ?? '';
 $input = json_decode(file_get_contents("php://input"), true);
 
 $link = create_connection();
+// 統一設置編碼，放在所有查詢之前
+mysqli_set_charset($link, "utf8mb4") or die("無法設置字符集: " . mysqli_error($link));
 
 switch ($action) {
     case 'add_to_cart':
@@ -85,7 +87,8 @@ switch ($action) {
             "data" => [
                 "items" => $items,
                 "total_amount" => $total_amount
-            ]
+            ],
+            JSON_UNESCAPED_UNICODE // 確保中文不被轉義
         ]);
         break;
 

@@ -11,6 +11,7 @@ if (!$conn) {
     die(json_encode(["state" => false, "message" => "連線錯誤: " . mysqli_connect_error()]));
 }
 
+mysqli_query($conn, "SET NAMES UTF8");
 $sql = "SELECT id, name, price, stock, category, description, image_url, created_at FROM products ORDER BY id DESC";
 $result = mysqli_query($conn, $sql);
 
